@@ -1,0 +1,72 @@
+{
+  "away": "Morocco",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "e85d3d1a27ae94a383fd200d9a5fae3c79fdf33d700508ad2231f325c0e701eb",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 4
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 1
+        },
+        "HT": {
+          "Corners": 4
+        },
+        "PE": {
+          "Goals": 2
+        },
+        "Total": {
+          "Corners": 5,
+          "Goals": 1
+        }
+      },
+      "Participant2": {
+        "ET1": {
+          "Corners": 1
+        },
+        "ETTotal": {
+          "Corners": 1
+        },
+        "H1": {
+          "Corners": 2
+        },
+        "H2": {
+          "Corners": 5,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 2
+        },
+        "PE": {
+          "Goals": 3
+        },
+        "Total": {
+          "Corners": 8,
+          "Goals": 1,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1427,
+    "StatusId": null,
+    "Ts": 1782791903572
+  },
+  "finalised_seq": 1427,
+  "finalised_ts": 1782791903572,
+  "fixture_id": 18172280,
+  "home": "Netherlands",
+  "home_goals": 1,
+  "participant1_id": 2161,
+  "participant1_is_home": true,
+  "participant2_id": 2530,
+  "result": "DRAW",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782781200000
+}

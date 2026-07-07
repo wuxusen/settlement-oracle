@@ -1,0 +1,55 @@
+{
+  "away": "Canada",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "2bc643ae0913a6b68b0eb989e6a4a9627f0ffbd4ba505f249fadc142cf61abd9",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 1
+        },
+        "HT": {
+          "Corners": 1
+        },
+        "Total": {
+          "Corners": 1
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 3
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 1,
+          "YellowCards": 2
+        },
+        "HT": {
+          "Corners": 4
+        },
+        "Total": {
+          "Corners": 4,
+          "Goals": 1,
+          "YellowCards": 2
+        }
+      }
+    },
+    "Seq": 960,
+    "StatusId": null,
+    "Ts": 1782680728057
+  },
+  "finalised_seq": 960,
+  "finalised_ts": 1782680728057,
+  "fixture_id": 18167317,
+  "home": "South Africa",
+  "home_goals": 0,
+  "participant1_id": 3011,
+  "participant1_is_home": true,
+  "participant2_id": 1686,
+  "result": "AWAY",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782673200000
+}

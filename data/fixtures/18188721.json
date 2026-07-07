@@ -1,0 +1,54 @@
+{
+  "away": "France",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "98de4aa5336bcdb6a2b221490f9a4607101adea91985b12e86f35738f2f79ccc",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H2": {
+          "Corners": 2
+        },
+        "Total": {
+          "Corners": 2
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 7,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 5,
+          "Goals": 1,
+          "YellowCards": 2
+        },
+        "HT": {
+          "Corners": 7,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 12,
+          "Goals": 1,
+          "YellowCards": 3
+        }
+      }
+    },
+    "Seq": 964,
+    "StatusId": 100,
+    "Ts": 1783206890273
+  },
+  "finalised_seq": 964,
+  "finalised_ts": 1783206890273,
+  "fixture_id": 18188721,
+  "home": "Paraguay",
+  "home_goals": 0,
+  "participant1_id": 2740,
+  "participant1_is_home": true,
+  "participant2_id": 1999,
+  "result": "AWAY",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783198980000
+}

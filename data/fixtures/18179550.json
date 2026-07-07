@@ -1,0 +1,75 @@
+{
+  "away": "Senegal",
+  "away_goals": 2,
+  "competition_id": 72,
+  "evidence_digest": "84c6eb64f475233b168d1a29f29ffbfcf8771c4e034ddd60b7181ce9c31f9454",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "ET2": {
+          "Goals": 1
+        },
+        "ETTotal": {
+          "Goals": 1
+        },
+        "H1": {
+          "Corners": 2
+        },
+        "H2": {
+          "Corners": 2,
+          "Goals": 2,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 2
+        },
+        "Total": {
+          "Corners": 4,
+          "Goals": 3,
+          "YellowCards": 1
+        }
+      },
+      "Participant2": {
+        "ET2": {
+          "Corners": 1
+        },
+        "ETTotal": {
+          "Corners": 1
+        },
+        "H1": {
+          "Corners": 1,
+          "Goals": 1
+        },
+        "H2": {
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 1,
+          "Goals": 1
+        },
+        "Total": {
+          "Corners": 2,
+          "Goals": 2,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1315,
+    "StatusId": null,
+    "Ts": 1782946530877
+  },
+  "finalised_seq": 1315,
+  "finalised_ts": 1782946530877,
+  "fixture_id": 18179550,
+  "home": "Belgium",
+  "home_goals": 3,
+  "participant1_id": 1575,
+  "participant1_is_home": true,
+  "participant2_id": 1289,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782936000000
+}

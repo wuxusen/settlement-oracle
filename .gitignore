@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+dist/
+build/
+.env
+*.log
+
+# Never commit any credential or wallet material.
+*.creds.json
+.txline_creds.json
+*wallet*.txt
+*mnemonic*

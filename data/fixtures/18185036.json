@@ -1,0 +1,61 @@
+{
+  "away": "Morocco",
+  "away_goals": 3,
+  "competition_id": 72,
+  "evidence_digest": "42c9406accf1bd1b147bcee90dd41d7f7b590f2f08a7cb7ab5b34c7c25696740",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 5,
+          "YellowCards": 2
+        },
+        "H2": {
+          "Corners": 6,
+          "YellowCards": 2
+        },
+        "HT": {
+          "Corners": 5,
+          "YellowCards": 2
+        },
+        "Total": {
+          "Corners": 11,
+          "YellowCards": 4
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "YellowCards": 4
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 3
+        },
+        "HT": {
+          "YellowCards": 4
+        },
+        "Total": {
+          "Corners": 1,
+          "Goals": 3,
+          "YellowCards": 4
+        }
+      }
+    },
+    "Seq": 1121,
+    "StatusId": 100,
+    "Ts": 1783192230603
+  },
+  "finalised_seq": 1121,
+  "finalised_ts": 1783192230603,
+  "fixture_id": 18185036,
+  "home": "Canada",
+  "home_goals": 0,
+  "participant1_id": 1686,
+  "participant1_is_home": true,
+  "participant2_id": 2530,
+  "result": "AWAY",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783184400000
+}

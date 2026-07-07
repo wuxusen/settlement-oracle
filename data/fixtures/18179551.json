@@ -1,0 +1,52 @@
+{
+  "away": "Austria",
+  "away_goals": 0,
+  "competition_id": 72,
+  "evidence_digest": "00037123a682ff3e4e4af381872c4573dbc036c4d9062fcb24540de40e6d41dc",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 6,
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 3,
+          "Goals": 2
+        },
+        "HT": {
+          "Corners": 6,
+          "Goals": 1
+        },
+        "Total": {
+          "Corners": 9,
+          "Goals": 3
+        }
+      },
+      "Participant2": {
+        "H2": {
+          "YellowCards": 1
+        },
+        "Total": {
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1041,
+    "StatusId": null,
+    "Ts": 1783026034574
+  },
+  "finalised_seq": 1041,
+  "finalised_ts": 1783026034574,
+  "fixture_id": 18179551,
+  "home": "Spain",
+  "home_goals": 3,
+  "participant1_id": 3021,
+  "participant1_is_home": true,
+  "participant2_id": 1521,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783018800000
+}

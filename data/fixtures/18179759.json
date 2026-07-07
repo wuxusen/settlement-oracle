@@ -1,0 +1,63 @@
+{
+  "away": "Ecuador",
+  "away_goals": 0,
+  "competition_id": 72,
+  "evidence_digest": "e0a68f0570bf0f89f03b5ff18314afc187f70dff40bf71d3029b926a517867d4",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 1,
+          "Goals": 2
+        },
+        "H2": {
+          "Corners": 2
+        },
+        "HT": {
+          "Corners": 1,
+          "Goals": 2
+        },
+        "Total": {
+          "Corners": 3,
+          "Goals": 2
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 5,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 3,
+          "RedCards": 1,
+          "YellowCards": 2
+        },
+        "HT": {
+          "Corners": 5,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 8,
+          "RedCards": 1,
+          "YellowCards": 3
+        }
+      }
+    },
+    "Seq": 885,
+    "StatusId": null,
+    "Ts": 1782879170255
+  },
+  "finalised_seq": 885,
+  "finalised_ts": 1782879170255,
+  "fixture_id": 18179759,
+  "home": "Mexico",
+  "home_goals": 2,
+  "participant1_id": 2545,
+  "participant1_is_home": true,
+  "participant2_id": 1892,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782871200000
+}

@@ -1,0 +1,62 @@
+{
+  "away": "Bosnia & Herzegovina",
+  "away_goals": 0,
+  "competition_id": 72,
+  "evidence_digest": "00eed6917a5f4084e1bacdc2427df90466553f467224b8225d65450d89df09dd",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 3,
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 1,
+          "RedCards": 1
+        },
+        "HT": {
+          "Corners": 3,
+          "Goals": 1
+        },
+        "Total": {
+          "Corners": 4,
+          "Goals": 2,
+          "RedCards": 1
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 2
+        },
+        "H2": {
+          "Corners": 1,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 2
+        },
+        "Total": {
+          "Corners": 3,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1057,
+    "StatusId": null,
+    "Ts": 1782958302500
+  },
+  "finalised_seq": 1057,
+  "finalised_ts": 1782958302500,
+  "fixture_id": 18172379,
+  "home": "USA",
+  "home_goals": 2,
+  "participant1_id": 3220,
+  "participant1_is_home": true,
+  "participant2_id": 1619,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782950400000
+}

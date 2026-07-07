@@ -1,0 +1,60 @@
+{
+  "away": "England",
+  "away_goals": 2,
+  "competition_id": 72,
+  "evidence_digest": "06fc1d0455f25108d4a8bed537618d67bb8bda3287adb7a5306d0a735d70d06c",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 1
+        },
+        "H2": {
+          "Corners": 2,
+          "YellowCards": 2
+        },
+        "HT": {
+          "Corners": 1
+        },
+        "Total": {
+          "Corners": 3,
+          "YellowCards": 2
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 5
+        },
+        "H2": {
+          "Corners": 2,
+          "Goals": 2,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 5
+        },
+        "Total": {
+          "Corners": 7,
+          "Goals": 2,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1180,
+    "StatusId": null,
+    "Ts": 1782601108501
+  },
+  "finalised_seq": 1180,
+  "finalised_ts": 1782601108501,
+  "fixture_id": 17588402,
+  "home": "Panama",
+  "home_goals": 1,
+  "participant1_id": 1250,
+  "participant1_is_home": true,
+  "participant2_id": 1888,
+  "result": "AWAY",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782594000000
+}

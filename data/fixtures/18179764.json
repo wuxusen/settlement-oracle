@@ -1,0 +1,65 @@
+{
+  "away": "Congo DR",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "6dedd282df82af20529b4e23e901c6cead51b4216b776964aee946dfa67163e3",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 2,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 3,
+          "Goals": 2
+        },
+        "HT": {
+          "Corners": 2,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 5,
+          "Goals": 2,
+          "YellowCards": 1
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 1,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 2
+        },
+        "HT": {
+          "Corners": 1,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 3,
+          "Goals": 1,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1164,
+    "StatusId": null,
+    "Ts": 1782929199848
+  },
+  "finalised_seq": 1164,
+  "finalised_ts": 1782929199848,
+  "fixture_id": 18179764,
+  "home": "England",
+  "home_goals": 2,
+  "participant1_id": 1888,
+  "participant1_is_home": true,
+  "participant2_id": 7794,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782921600000
+}

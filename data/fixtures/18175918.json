@@ -1,0 +1,79 @@
+{
+  "away": "Cape Verde",
+  "away_goals": 2,
+  "competition_id": 72,
+  "evidence_digest": "2dc674761b300da9edd13a50d7a096ec855f24f8c170bcb110396a0a6a363d00",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "ET1": {
+          "Corners": 2,
+          "Goals": 1
+        },
+        "ET2": {
+          "Corners": 1,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "ETTotal": {
+          "Corners": 3,
+          "Goals": 2,
+          "YellowCards": 1
+        },
+        "H1": {
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 5
+        },
+        "HT": {
+          "Goals": 1
+        },
+        "Total": {
+          "Corners": 8,
+          "Goals": 3,
+          "YellowCards": 1
+        }
+      },
+      "Participant2": {
+        "ET1": {
+          "Corners": 3,
+          "Goals": 1
+        },
+        "ET2": {
+          "Corners": 3
+        },
+        "ETTotal": {
+          "Corners": 6,
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 2,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 8,
+          "Goals": 2,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1242,
+    "StatusId": 100,
+    "Ts": 1783126189288
+  },
+  "finalised_seq": 1242,
+  "finalised_ts": 1783126189288,
+  "fixture_id": 18175918,
+  "home": "Argentina",
+  "home_goals": 3,
+  "participant1_id": 1489,
+  "participant1_is_home": true,
+  "participant2_id": 1051,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783116000000
+}

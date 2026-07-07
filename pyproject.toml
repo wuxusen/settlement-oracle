@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "settlement-oracle"
+version = "0.1.0"
+description = "Verifiable settlement oracle for prediction markets, using real TxLINE match results anchored to Solana."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Shawn Wu" }]
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+# On-chain anchoring is optional: the oracle settles and produces verifiable
+# receipts without it. Install this to anchor to / verify against Solana.
+anchor = [
+    "solana>=0.32",
+    "solders>=0.20",
+    "bip-utils>=2.7",
+]
+dev = [
+    "pytest>=7",
+]
+
+[project.scripts]
+settlement-oracle = "settlement_oracle.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["settlement_oracle*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,63 @@
+{
+  "away": "Norway",
+  "away_goals": 2,
+  "competition_id": 72,
+  "evidence_digest": "93c8933bdc90841617c3ec8f788fa7b780355a56dae65b34f9117605b44a0027",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 9
+        },
+        "H2": {
+          "Corners": 5,
+          "Goals": 1
+        },
+        "HT": {
+          "Corners": 9
+        },
+        "Total": {
+          "Corners": 14,
+          "Goals": 1
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 2,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 1
+        },
+        "HT": {
+          "Corners": 2,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 3,
+          "Goals": 2,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 1059,
+    "StatusId": null,
+    "Ts": 1782846132362
+  },
+  "finalised_seq": 1059,
+  "finalised_ts": 1782846132362,
+  "fixture_id": 18175397,
+  "home": "Ivory Coast",
+  "home_goals": 1,
+  "participant1_id": 2236,
+  "participant1_is_home": true,
+  "participant2_id": 2661,
+  "result": "AWAY",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782838800000
+}

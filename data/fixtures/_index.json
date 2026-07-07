@@ -1,0 +1,154 @@
+{
+  "captured": [
+    {
+      "fixture_id": 18188721,
+      "label": "Paraguay v France",
+      "result": "AWAY",
+      "score": "0-1"
+    },
+    {
+      "fixture_id": 18185036,
+      "label": "Canada v Morocco",
+      "result": "AWAY",
+      "score": "0-3"
+    },
+    {
+      "fixture_id": 18179549,
+      "label": "Colombia v Ghana",
+      "result": "HOME",
+      "score": "1-0"
+    },
+    {
+      "fixture_id": 18175918,
+      "label": "Argentina v Cape Verde",
+      "result": "HOME",
+      "score": "3-2"
+    },
+    {
+      "fixture_id": 18176123,
+      "label": "Australia v Egypt",
+      "result": "DRAW",
+      "score": "1-1"
+    },
+    {
+      "fixture_id": 18179552,
+      "label": "Switzerland v Algeria",
+      "result": "HOME",
+      "score": "2-0"
+    },
+    {
+      "fixture_id": 18179763,
+      "label": "Portugal v Croatia",
+      "result": "HOME",
+      "score": "2-1"
+    },
+    {
+      "fixture_id": 18179551,
+      "label": "Spain v Austria",
+      "result": "HOME",
+      "score": "3-0"
+    },
+    {
+      "fixture_id": 18172379,
+      "label": "USA v Bosnia & Herzegovina",
+      "result": "HOME",
+      "score": "2-0"
+    },
+    {
+      "fixture_id": 18179550,
+      "label": "Belgium v Senegal",
+      "result": "HOME",
+      "score": "3-2"
+    },
+    {
+      "fixture_id": 18179764,
+      "label": "England v Congo DR",
+      "result": "HOME",
+      "score": "2-1"
+    },
+    {
+      "fixture_id": 18179759,
+      "label": "Mexico v Ecuador",
+      "result": "HOME",
+      "score": "2-0"
+    },
+    {
+      "fixture_id": 18175397,
+      "label": "Ivory Coast v Norway",
+      "result": "AWAY",
+      "score": "1-2"
+    },
+    {
+      "fixture_id": 18175981,
+      "label": "France v Sweden",
+      "result": "HOME",
+      "score": "3-0"
+    },
+    {
+      "fixture_id": 18175983,
+      "label": "Germany v Paraguay",
+      "result": "DRAW",
+      "score": "1-1"
+    },
+    {
+      "fixture_id": 18172280,
+      "label": "Netherlands v Morocco",
+      "result": "DRAW",
+      "score": "1-1"
+    },
+    {
+      "fixture_id": 18172469,
+      "label": "Brazil v Japan",
+      "result": "HOME",
+      "score": "2-1"
+    },
+    {
+      "fixture_id": 18167317,
+      "label": "South Africa v Canada",
+      "result": "AWAY",
+      "score": "0-1"
+    },
+    {
+      "fixture_id": 17926704,
+      "label": "Congo DR v Uzbekistan",
+      "result": "HOME",
+      "score": "3-1"
+    },
+    {
+      "fixture_id": 17588245,
+      "label": "Croatia v Ghana",
+      "result": "HOME",
+      "score": "2-1"
+    },
+    {
+      "fixture_id": 17588325,
+      "label": "Jordan v Argentina",
+      "result": "AWAY",
+      "score": "1-3"
+    },
+    {
+      "fixture_id": 17588326,
+      "label": "Algeria v Austria",
+      "result": "DRAW",
+      "score": "3-3"
+    },
+    {
+      "fixture_id": 17588391,
+      "label": "Colombia v Portugal",
+      "result": "HOME",
+      "score": "1-0"
+    },
+    {
+      "fixture_id": 17588402,
+      "label": "Panama v England",
+      "result": "AWAY",
+      "score": "1-2"
+    }
+  ],
+  "captured_at": "2026-07-07T13:57:04Z",
+  "competition_id": 72,
+  "n_captured": 24,
+  "n_skipped": 0,
+  "skipped": [],
+  "source": "TxODDS TxLINE devnet \u2014 FIFA World Cup free tier"
+}

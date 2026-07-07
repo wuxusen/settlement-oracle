@@ -1,0 +1,67 @@
+{
+  "away": "Uzbekistan",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "e38e53ca0c08e86253cc154e1ca5fbcc2bcb373585d925c620a6a16decba2bf6",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 1,
+          "YellowCards": 2
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 3,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 1,
+          "YellowCards": 2
+        },
+        "Total": {
+          "Corners": 2,
+          "Goals": 3,
+          "YellowCards": 3
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 3,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 1,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 3,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 4,
+          "Goals": 1,
+          "YellowCards": 2
+        }
+      }
+    },
+    "Seq": 1116,
+    "StatusId": null,
+    "Ts": 1782610750802
+  },
+  "finalised_seq": 1116,
+  "finalised_ts": 1782610750802,
+  "fixture_id": 17926704,
+  "home": "Congo DR",
+  "home_goals": 3,
+  "participant1_id": 7794,
+  "participant1_is_home": true,
+  "participant2_id": 3225,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782603060000
+}

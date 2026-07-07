@@ -1,0 +1,62 @@
+{
+  "away": "Ghana",
+  "away_goals": 0,
+  "competition_id": 72,
+  "evidence_digest": "4d6d06c7708ea0107777f6c4160d009725e871c527d844c52dfccc8a699c2efd",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 1,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 2,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 1,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 3,
+          "Goals": 1,
+          "YellowCards": 2
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 2
+        },
+        "H2": {
+          "YellowCards": 3
+        },
+        "HT": {
+          "Corners": 2
+        },
+        "Total": {
+          "Corners": 2,
+          "YellowCards": 3
+        }
+      }
+    },
+    "Seq": 1037,
+    "StatusId": 100,
+    "Ts": 1783136183622
+  },
+  "finalised_seq": 1037,
+  "finalised_ts": 1783136183622,
+  "fixture_id": 18179549,
+  "home": "Colombia",
+  "home_goals": 1,
+  "participant1_id": 1748,
+  "participant1_is_home": true,
+  "participant2_id": 2043,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783128600000
+}

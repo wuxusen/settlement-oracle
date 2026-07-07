@@ -1,0 +1,52 @@
+{
+  "away": "Sweden",
+  "away_goals": 0,
+  "competition_id": 72,
+  "evidence_digest": "b65c0ff3db92db170f0bb1141bf92b7f2033b1148cde85ce84fa5a69476b9179",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 6,
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 3,
+          "Goals": 2
+        },
+        "HT": {
+          "Corners": 6,
+          "Goals": 1
+        },
+        "Total": {
+          "Corners": 9,
+          "Goals": 3
+        }
+      },
+      "Participant2": {
+        "H2": {
+          "Corners": 1
+        },
+        "Total": {
+          "Corners": 1
+        }
+      }
+    },
+    "Seq": 993,
+    "StatusId": null,
+    "Ts": 1782860209739
+  },
+  "finalised_seq": 993,
+  "finalised_ts": 1782860209739,
+  "fixture_id": 18175981,
+  "home": "France",
+  "home_goals": 3,
+  "participant1_id": 1999,
+  "participant1_is_home": true,
+  "participant2_id": 3095,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782853200000
+}

@@ -1,0 +1,61 @@
+{
+  "away": "Austria",
+  "away_goals": 3,
+  "competition_id": 72,
+  "evidence_digest": "f3c17e4524ef0c3f71fc62952e3919e3e8d044278888af9b3931c4e22a35e23c",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Goals": 1
+        },
+        "H2": {
+          "Goals": 2
+        },
+        "HT": {
+          "Goals": 1
+        },
+        "Total": {
+          "Goals": 3
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 2,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 2
+        },
+        "HT": {
+          "Corners": 2,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 3,
+          "Goals": 3,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 985,
+    "StatusId": null,
+    "Ts": 1782619413637
+  },
+  "finalised_seq": 985,
+  "finalised_ts": 1782619413637,
+  "fixture_id": 17588326,
+  "home": "Algeria",
+  "home_goals": 3,
+  "participant1_id": 1451,
+  "participant1_is_home": true,
+  "participant2_id": 1521,
+  "result": "DRAW",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782612000000
+}

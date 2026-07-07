@@ -1,0 +1,56 @@
+{
+  "away": "Ghana",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "077d639b5cbfb498e1c1d7d519daf5b0e2f301738d2bb99be07f319a08a9436d",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 3,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Goals": 1
+        },
+        "Total": {
+          "Corners": 3,
+          "Goals": 2,
+          "YellowCards": 1
+        }
+      },
+      "Participant2": {
+        "H2": {
+          "Corners": 2,
+          "Goals": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 2,
+          "Goals": 1,
+          "YellowCards": 1
+        }
+      }
+    },
+    "Seq": 988,
+    "StatusId": null,
+    "Ts": 1782601413579
+  },
+  "finalised_seq": 988,
+  "finalised_ts": 1782601413579,
+  "fixture_id": 17588245,
+  "home": "Croatia",
+  "home_goals": 2,
+  "participant1_id": 1766,
+  "participant1_is_home": true,
+  "participant2_id": 2043,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782594000000
+}

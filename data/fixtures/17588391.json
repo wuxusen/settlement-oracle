@@ -1,0 +1,50 @@
+{
+  "away": "Portugal",
+  "away_goals": 0,
+  "competition_id": 72,
+  "evidence_digest": "ecf930a20b2cff2c91563067bcd8afe8ee07aec5dc2aa70c3c4ddc5d207e187f",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 1
+        },
+        "H2": {
+          "Corners": 4,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 1
+        },
+        "Total": {
+          "Corners": 5,
+          "YellowCards": 1
+        }
+      },
+      "Participant2": {
+        "H2": {
+          "Corners": 2
+        },
+        "Total": {
+          "Corners": 2
+        }
+      }
+    },
+    "Seq": 1086,
+    "StatusId": null,
+    "Ts": 1782610445616
+  },
+  "finalised_seq": 1086,
+  "finalised_ts": 1782610445616,
+  "fixture_id": 17588391,
+  "home": "Colombia",
+  "home_goals": 1,
+  "participant1_id": 1748,
+  "participant1_is_home": true,
+  "participant2_id": 2802,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1782603060000
+}

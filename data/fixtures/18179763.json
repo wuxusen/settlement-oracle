@@ -1,0 +1,57 @@
+{
+  "away": "Croatia",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "355c3407166488a43e32f41a57c2220a9d191c8515a6adfe334124e2b004d4a0",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 6,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 3,
+          "Goals": 2
+        },
+        "HT": {
+          "Corners": 6,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 9,
+          "Goals": 2,
+          "YellowCards": 1
+        }
+      },
+      "Participant2": {
+        "H2": {
+          "Corners": 5,
+          "Goals": 1,
+          "YellowCards": 2
+        },
+        "Total": {
+          "Corners": 5,
+          "Goals": 1,
+          "YellowCards": 2
+        }
+      }
+    },
+    "Seq": 1074,
+    "StatusId": null,
+    "Ts": 1783041221434
+  },
+  "finalised_seq": 1074,
+  "finalised_ts": 1783041221434,
+  "fixture_id": 18179763,
+  "home": "Portugal",
+  "home_goals": 2,
+  "participant1_id": 2802,
+  "participant1_is_home": true,
+  "participant2_id": 1766,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783033200000
+}

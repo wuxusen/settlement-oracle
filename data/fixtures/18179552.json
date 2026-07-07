@@ -1,0 +1,62 @@
+{
+  "away": "Algeria",
+  "away_goals": 0,
+  "competition_id": 72,
+  "evidence_digest": "2472cb84d87ee9037bab7e28b90befb9e0f5d17b18d9f436466cc53614b1856a",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 2,
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 2,
+          "Goals": 1
+        },
+        "HT": {
+          "Corners": 2,
+          "Goals": 1
+        },
+        "Total": {
+          "Corners": 4,
+          "Goals": 2
+        }
+      },
+      "Participant2": {
+        "H1": {
+          "Corners": 1,
+          "YellowCards": 1
+        },
+        "H2": {
+          "Corners": 1,
+          "YellowCards": 1
+        },
+        "HT": {
+          "Corners": 1,
+          "YellowCards": 1
+        },
+        "Total": {
+          "Corners": 2,
+          "YellowCards": 2
+        }
+      }
+    },
+    "Seq": 1070,
+    "StatusId": null,
+    "Ts": 1783054805521
+  },
+  "finalised_seq": 1070,
+  "finalised_ts": 1783054805521,
+  "fixture_id": 18179552,
+  "home": "Switzerland",
+  "home_goals": 2,
+  "participant1_id": 3099,
+  "participant1_is_home": true,
+  "participant2_id": 1451,
+  "result": "HOME",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783047600000
+}

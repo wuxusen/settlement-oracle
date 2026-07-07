@@ -1,0 +1,75 @@
+{
+  "away": "Egypt",
+  "away_goals": 1,
+  "competition_id": 72,
+  "evidence_digest": "c3144d37b9e344396902dafc59890bbe77865d6d1f3f0ea43a536959cde84781",
+  "finalised_record": {
+    "Action": "game_finalised",
+    "Confirmed": null,
+    "Score": {
+      "Participant1": {
+        "H1": {
+          "Corners": 3
+        },
+        "H2": {
+          "Corners": 1,
+          "Goals": 1
+        },
+        "HT": {
+          "Corners": 3
+        },
+        "PE": {
+          "Goals": 2
+        },
+        "Total": {
+          "Corners": 4,
+          "Goals": 1
+        }
+      },
+      "Participant2": {
+        "ET1": {
+          "YellowCards": 1
+        },
+        "ET2": {
+          "Corners": 4,
+          "YellowCards": 1
+        },
+        "ETTotal": {
+          "Corners": 4,
+          "YellowCards": 2
+        },
+        "H1": {
+          "Goals": 1
+        },
+        "H2": {
+          "Corners": 3
+        },
+        "HT": {
+          "Goals": 1
+        },
+        "PE": {
+          "Goals": 4
+        },
+        "Total": {
+          "Corners": 7,
+          "Goals": 1,
+          "YellowCards": 2
+        }
+      }
+    },
+    "Seq": 1352,
+    "StatusId": 100,
+    "Ts": 1783112127602
+  },
+  "finalised_seq": 1352,
+  "finalised_ts": 1783112127602,
+  "fixture_id": 18176123,
+  "home": "Australia",
+  "home_goals": 1,
+  "participant1_id": 1519,
+  "participant1_is_home": true,
+  "participant2_id": 1867,
+  "result": "DRAW",
+  "source": "TxODDS TxLINE devnet \u2014 scores feed (game_finalised)",
+  "start_time": 1783101600000
+}
