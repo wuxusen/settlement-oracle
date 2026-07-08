@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verifiable Settlement Oracle — settle prediction markets on evidence anyone can re-check</title>
+<meta name="description" content="A prediction-market settlement oracle: resolve markets deterministically from the authoritative TxLINE game_finalised signal, chain every settlement into a tamper-evident SHA-256 log, and anchor it on Solana. Change one byte and the browser re-hashes it and flags the tamper.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0e13'/%3E%3Cpath d='M16 4l9 4v6c0 5.5-3.8 10.4-9 12-5.2-1.6-9-6.5-9-12V8z' fill='none' stroke='%2335d488' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M11.5 16l3 3 6-6.5' fill='none' stroke='%2335d488' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #0b0e13;
+    --panel: #12161f;
+    --panel-2: #171c27;
+    --border: #232a38;
+    --text: #e8ecf4;
+    --dim: #8a93a6;
+    --green: #35d488;
+    --red: #ff4d5e;
+    --amber: #f4b942;
+    --blue: #5aa2ff;
+    --link: #7ab4ff;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f6fa; --panel: #ffffff; --panel-2: #eef1f6; --border: #d8deea;
+      --text: #121722; --dim: #5c667a; --link: #1f6feb;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b0e13; --panel: #12161f; --panel-2: #171c27; --border: #232a38;
+    --text: #e8ecf4; --dim: #8a93a6; --link: #7ab4ff;
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f6fa; --panel: #ffffff; --panel-2: #eef1f6; --border: #d8deea;
+    --text: #121722; --dim: #5c667a; --link: #1f6feb;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--link); }
+  .mono { font-family: var(--mono); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  h2.sec { font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim); font-weight: 700; text-align: center; margin: 0 0 8px; }
+
+  /* header */
+  header { border-bottom: 1px solid var(--border); background: var(--panel); position: sticky; top: 0; z-index: 30; }
+  header .wrap { display: flex; align-items: center; gap: 16px; padding: 15px 24px; }
+  .logo { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .logo svg { width: 22px; height: 22px; }
+  header .spacer { flex: 1; }
+  header a.nav, header button.nav {
+    font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--text);
+    border: 1px solid var(--border); padding: 8px 13px; border-radius: 8px; background: var(--panel-2);
+    white-space: nowrap; cursor: pointer; font-family: inherit;
+  }
+  header a.nav:hover, header button.nav:hover { border-color: var(--link); }
+  @media (max-width: 720px) { header a.nav.hide-sm { display: none; } }
+
+  /* hero */
+  .hero { padding: 60px 0 12px; }
+  .hero .kicker { color: var(--blue); letter-spacing: 0.15em; font-size: 12.5px; text-transform: uppercase; font-weight: 700; margin-bottom: 18px; text-align: center; }
+  .hero h1 { font-size: clamp(30px, 5.1vw, 50px); line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; margin: 0 auto 18px; max-width: 900px; text-align: center; }
+  .hero p.lede { font-size: 18px; color: var(--dim); max-width: 730px; margin: 0 auto; text-align: center; }
+  .hero p.lede b { color: var(--text); font-weight: 700; }
+
+  .headline-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 34px 0 26px; }
+  .hstat { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px 22px; overflow: hidden; }
+  .hstat::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .hstat.g::before { background: var(--green); }
+  .hstat.b::before { background: var(--blue); }
+  .hstat.a::before { background: var(--amber); }
+  .hstat .tag { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dim); margin-bottom: 12px; }
+  .hstat .tag .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .hstat.g .tag .dot { background: var(--green); box-shadow: 0 0 10px 0 var(--green); }
+  .hstat.b .tag .dot { background: var(--blue); box-shadow: 0 0 10px 0 var(--blue); }
+  .hstat.a .tag .dot { background: var(--amber); box-shadow: 0 0 10px 0 var(--amber); }
+  .hstat .num { font-size: clamp(34px, 5vw, 48px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; font-family: var(--mono); }
+  .hstat.g .num { color: var(--green); }
+  .hstat.b .num { color: var(--blue); }
+  .hstat.a .num { color: var(--amber); }
+  .hstat .num .unit { font-size: 0.4em; color: var(--dim); font-weight: 700; margin-left: 6px; letter-spacing: 0; }
+  .hstat .title { font-size: 15px; font-weight: 700; margin: 12px 0 4px; }
+  .hstat .desc { font-size: 13.5px; color: var(--dim); margin: 0; }
+
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 15px; padding: 13px 22px; border-radius: 10px; border: 1px solid transparent; white-space: nowrap; cursor: pointer; font-family: inherit; }
+  .btn.primary { background: var(--green); color: #04160d; }
+  .btn.primary:hover { filter: brightness(1.06); }
+  .btn.solid { background: var(--blue); color: #05101f; }
+  .btn.solid:hover { filter: brightness(1.06); }
+  .btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+  .btn.ghost:hover { border-color: var(--link); }
+
+  /* self-test banner */
+  .selftest { margin: 30px 0 4px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; font-size: 14px; }
+  .selftest .pip { width: 11px; height: 11px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 10px 0 var(--amber); flex: none; }
+  .selftest.ok .pip { background: var(--green); box-shadow: 0 0 10px 0 var(--green); }
+  .selftest.bad .pip { background: var(--red); box-shadow: 0 0 10px 0 var(--red); }
+  .selftest .txt { color: var(--dim); }
+  .selftest .txt b { color: var(--text); }
+
+  /* generic panels */
+  section.block { padding: 52px 0 8px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; }
+  .card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .card > h3 { margin: 0 0 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dim); font-weight: 700; }
+
+  /* fixture picker */
+  .picker-lbl { font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.11em; color: var(--dim); font-weight: 700; margin: 0 0 14px; }
+  .fx-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .fx { text-align: left; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; transition: border-color .15s ease, transform .05s ease; font: inherit; }
+  .fx:hover { border-color: var(--link); }
+  .fx:active { transform: translateY(1px); }
+  .fx.active { border-color: var(--green); box-shadow: 0 0 0 1px var(--green) inset; }
+  .fx .teams { font-size: 14.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .fx .meta { font-size: 12px; color: var(--dim); margin-top: 5px; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; }
+  .fx .scorepill { font-family: var(--mono); font-weight: 700; color: var(--text); background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 1px 7px; }
+  .fx .var { margin-top: 8px; font-size: 10.5px; font-weight: 700; letter-spacing: .03em; color: var(--amber); text-transform: uppercase; }
+
+  /* board */
+  #board { display: none; margin-top: 22px; }
+  #board.show { display: block; }
+  .board-top { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 18px 22px; border-bottom: 1px solid var(--border); background: var(--panel-2); border-radius: 16px 16px 0 0; }
+  .board-top .teams { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; }
+  .board-top .subline { font-size: 12.5px; color: var(--dim); margin-top: 2px; }
+  .board-top .score { font-size: 30px; font-weight: 800; font-family: var(--mono); letter-spacing: -0.02em; }
+  .board-top .spacer { flex: 1; }
+  .fbadge { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); border: 1px solid color-mix(in srgb, var(--green) 40%, var(--border)); border-radius: 999px; padding: 7px 14px; }
+  .fbadge .d { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 9px 0 var(--green); }
+  .outcome-pill { font-size: 12px; font-weight: 800; letter-spacing: .04em; padding: 6px 11px; border-radius: 7px; background: var(--panel); border: 1px solid var(--border); color: var(--text); }
+
+  .var-note { margin: 0; padding: 13px 22px; background: color-mix(in srgb, var(--amber) 9%, transparent); border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); }
+  .var-note b { color: var(--amber); }
+
+  .board-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; padding: 20px 22px; }
+
+  /* markets table */
+  table.mk { width: 100%; border-collapse: collapse; }
+  table.mk th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); font-weight: 700; padding: 0 8px 8px; }
+  table.mk th.r, table.mk td.r { text-align: right; }
+  table.mk td { padding: 9px 8px; font-size: 13.5px; border-top: 1px solid var(--border); vertical-align: middle; }
+  table.mk tr.pick { cursor: pointer; }
+  table.mk tr.pick:hover td { background: var(--panel); }
+  table.mk tr.focus td { background: color-mix(in srgb, var(--green) 9%, transparent); }
+  table.mk tr.focus td:first-child { box-shadow: inset 3px 0 0 var(--green); }
+  .mkname { font-weight: 600; }
+  .mkrule { color: var(--dim); font-size: 12px; }
+  .res { font-weight: 800; font-size: 12.5px; letter-spacing: .03em; padding: 3px 10px; border-radius: 6px; font-family: var(--mono); }
+  .res.YES { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .res.NO { color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); }
+  .res.VOID { color: var(--dim); background: var(--panel); }
+  .focus-hint { font-size: 11.5px; color: var(--dim); margin-top: 10px; }
+
+  /* receipt / kv */
+  .kv { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 7px 0; border-top: 1px solid var(--border); }
+  .kv:first-child { border-top: none; }
+  .kv .k { color: var(--dim); flex: none; }
+  .kv .v { text-align: right; font-weight: 600; word-break: break-word; }
+  .hashbox { margin-top: 10px; }
+  .hashbox .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .hashval { font-family: var(--mono); font-size: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; overflow-x: auto; white-space: nowrap; }
+  .repro { font-size: 10.5px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; padding: 2px 8px; border-radius: 5px; }
+  .repro.ok { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .repro.bad { color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); }
+
+  /* chain */
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .clink { display: grid; grid-template-columns: 22px 1fr; gap: 10px; }
+  .clink .rail { display: flex; flex-direction: column; align-items: center; }
+  .clink .node { width: 12px; height: 12px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px 0 var(--green); margin-top: 5px; flex: none; }
+  .clink.broken .node { background: var(--red); box-shadow: 0 0 8px 0 var(--red); }
+  .clink .line { width: 2px; flex: 1; background: var(--border); margin: 3px 0; min-height: 10px; }
+  .clink .body { padding-bottom: 12px; min-width: 0; }
+  .clink .head { font-size: 12.5px; font-weight: 700; }
+  .clink .head .tagk { color: var(--dim); font-weight: 600; }
+  .clink .hh { font-family: var(--mono); font-size: 11px; color: var(--dim); overflow-x: auto; white-space: nowrap; margin-top: 3px; }
+  .clink.broken .head { color: var(--red); }
+
+  /* tamper lab */
+  .lab { margin: 20px 22px 24px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .lab-head { padding: 14px 18px; background: var(--panel-2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .lab-head .ico { font-size: 18px; }
+  .lab-head .t { font-size: 15px; font-weight: 800; }
+  .lab-head .s { font-size: 12.5px; color: var(--dim); }
+  .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .lab-controls { padding: 18px; border-right: 1px solid var(--border); }
+  .lab-verify { padding: 18px; }
+  .ctl { margin-bottom: 18px; }
+  .ctl .cl { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); font-weight: 700; margin-bottom: 9px; }
+  .stepper { display: inline-flex; align-items: center; gap: 0; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--panel); }
+  .stepper button { font: inherit; font-weight: 800; font-size: 17px; width: 40px; height: 40px; border: 0; background: var(--panel-2); color: var(--text); cursor: pointer; }
+  .stepper button:hover { background: var(--border); }
+  .stepper .val { min-width: 46px; text-align: center; font-family: var(--mono); font-size: 20px; font-weight: 800; }
+  .scoreedit { display: flex; gap: 22px; align-items: flex-end; flex-wrap: wrap; }
+  .scoreedit .team-l { font-size: 12px; color: var(--dim); margin-bottom: 6px; font-weight: 600; }
+  .togline { display: flex; align-items: flex-start; gap: 11px; margin-top: 4px; cursor: pointer; user-select: none; }
+  .togline input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--blue); flex: none; }
+  .togline .tt { font-size: 13px; font-weight: 700; }
+  .togline .td { font-size: 12px; color: var(--dim); }
+  .labbtns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+  .labbtns button { font: inherit; font-weight: 700; font-size: 12.5px; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+  .labbtns button:hover { border-color: var(--link); }
+  .labbtns button.reset { background: var(--panel-2); }
+
+  /* verification checklist */
+  .verdict { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; margin-bottom: 14px; border: 1px solid var(--border); }
+  .verdict.ok { background: color-mix(in srgb, var(--green) 12%, transparent); border-color: color-mix(in srgb, var(--green) 45%, var(--border)); }
+  .verdict.bad { background: color-mix(in srgb, var(--red) 12%, transparent); border-color: color-mix(in srgb, var(--red) 50%, var(--border)); }
+  .verdict .big { font-size: 17px; font-weight: 800; letter-spacing: .01em; }
+  .verdict.ok .big { color: var(--green); }
+  .verdict.bad .big { color: var(--red); }
+  .verdict .sub { font-size: 12px; color: var(--dim); }
+  .checks { display: flex; flex-direction: column; gap: 2px; }
+  .chk { display: grid; grid-template-columns: 58px 1fr; gap: 10px; padding: 8px 4px; border-top: 1px solid var(--border); align-items: baseline; }
+  .chk:first-child { border-top: none; }
+  .chk .mark { font-size: 11px; font-weight: 800; letter-spacing: .04em; text-align: center; padding: 3px 0; border-radius: 5px; font-family: var(--mono); }
+  .chk .mark.pass { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .chk .mark.fail { color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); }
+  .chk .cn { font-size: 13px; font-weight: 700; }
+  .chk .cd { font-size: 12px; color: var(--dim); margin-top: 1px; word-break: break-word; }
+
+  /* how / pipeline */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .step { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .step .n { font-family: var(--mono); font-size: 12px; color: var(--blue); font-weight: 700; letter-spacing: .06em; }
+  .step .s { font-size: 15px; font-weight: 700; margin: 6px 0; }
+  .step p { margin: 0; font-size: 13.5px; color: var(--dim); }
+
+  .layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px; }
+  .layer { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .layer .lh { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 14.5px; margin-bottom: 6px; }
+  .layer .d { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--blue); box-shadow: 0 0 9px 0 var(--blue); }
+  .layer.g .d { background: var(--green); box-shadow: 0 0 9px 0 var(--green); }
+  .layer.a .d { background: var(--amber); box-shadow: 0 0 9px 0 var(--amber); }
+  .layer p { margin: 0; font-size: 13px; color: var(--dim); }
+
+  /* anchor */
+  .anchor-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; align-items: stretch; }
+  .anchor-card { padding: 22px 24px; }
+  .anchor-card p { color: var(--dim); font-size: 14px; }
+  .anchor-card p b { color: var(--text); }
+  .memo { font-family: var(--mono); font-size: 12.5px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; overflow-x: auto; white-space: nowrap; margin: 12px 0; }
+  .txcard { background: var(--panel-2); }
+  .txcard .txrow { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 8px 0; border-top: 1px solid var(--border); }
+  .txcard .txrow:first-of-type { border-top: none; }
+  .txcard .txrow .k { color: var(--dim); flex: none; }
+  .txcard .txrow .v { text-align: right; font-weight: 600; word-break: break-all; font-family: var(--mono); font-size: 12px; }
+  .txcard a.explorer { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-weight: 700; text-decoration: none; font-size: 14px; }
+  .txcard a.explorer:hover { text-decoration: underline; }
+  .honest { font-size: 12.5px; color: var(--dim); margin-top: 12px; border-left: 2px solid var(--border); padding-left: 12px; }
+
+  /* footer */
+  footer { margin-top: 64px; border-top: 1px solid var(--border); background: var(--panel); padding: 26px 0; }
+  footer .wrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  footer .muted { color: var(--dim); font-size: 13.5px; }
+  footer .spacer { flex: 1; }
+  footer a { font-size: 13.5px; font-weight: 600; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .headline-stats { grid-template-columns: 1fr; }
+    .board-grid { grid-template-columns: 1fr; }
+    .lab-grid { grid-template-columns: 1fr; }
+    .lab-controls { border-right: none; border-bottom: 1px solid var(--border); }
+    .anchor-wrap { grid-template-columns: 1fr; }
+    .layers { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 620px) {
+    .fx-grid { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .board-top .score { order: 3; }
+  }
+  @media (max-width: 420px) {
+    .fx-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="logo">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l9 4v6c0 5.5-3.8 10.4-9 12-5.2-1.6-9-6.5-9-12V8z" fill="none" stroke="#35d488" stroke-width="2.4" stroke-linejoin="round"/><path d="M11.5 16l3 3 6-6.5" fill="none" stroke="#35d488" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="mono">settlement-oracle</span>
+      </div>
+      <div class="spacer"></div>
+      <a class="nav hide-sm" href="#demo">Tamper demo</a>
+      <a class="nav hide-sm" href="#anchor">On-chain</a>
+      <a class="nav" href="https://github.com/wuxusen/settlement-oracle">GitHub</a>
+      <button class="nav" id="themebtn" title="Toggle light / dark">◐</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">Prediction-market settlement · real World Cup results · Solana devnet · paper only</div>
+      <h1>Settle prediction markets on evidence anyone can re-check.</h1>
+      <p class="lede">
+        Pricing a market is a modelling problem. <b>Settling it is a trust problem</b> — and it's
+        where the money actually disputes. This oracle resolves markets deterministically from the
+        authoritative result, chains every settlement into a SHA-256 log, and anchors it on-chain.
+        Change one byte below and your browser re-hashes it and rejects the tamper.
+      </p>
+
+      <div class="headline-stats">
+        <div class="hstat g">
+          <div class="tag"><span class="dot"></span>Deterministic</div>
+          <div class="num" id="hs-fixtures">24</div>
+          <div class="title">real fixtures, settled by rule</div>
+          <p class="desc">Every market resolves as a pure function of the TxLINE
+          <span class="mono">game_finalised</span> result — no clock, no discretion, same answer forever.</p>
+        </div>
+        <div class="hstat b">
+          <div class="tag"><span class="dot"></span>Tamper-evident</div>
+          <div class="num" id="hs-hashes">—</div>
+          <div class="title">receipt hashes reproduced in-browser</div>
+          <p class="desc">Your browser re-derives every SHA-256 with the Web Crypto API and matches
+          the committed values. Edit any byte and the match breaks — visibly.</p>
+        </div>
+        <div class="hstat a">
+          <div class="tag"><span class="dot"></span>On-chain</div>
+          <div class="num">1<span class="unit">memo tx</span></div>
+          <div class="title">audit-chain head anchored on Solana</div>
+          <p class="desc">The rolling chain head is committed on Solana devnet. Given a receipt and a
+          signature, anyone re-checks a settlement with zero access to us.</p>
+        </div>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="#demo">▸ Settle a match &amp; try the tamper demo</a>
+        <a class="btn solid" href="#anchor">⛓ See the on-chain anchor</a>
+        <a class="btn ghost" href="https://github.com/wuxusen/settlement-oracle">View source</a>
+      </div>
+
+      <div class="selftest" id="selftest">
+        <span class="pip"></span>
+        <span class="txt" id="selftest-txt">Recomputing every committed hash in your browser…</span>
+      </div>
+    </section>
+
+    <!-- ========================= INTERACTIVE DEMO ========================= -->
+    <section class="block" id="demo">
+      <h2 class="sec">Interactive · settle → chain → tamper → reject</h2>
+      <p style="text-align:center; color:var(--dim); font-size:15px; max-width:660px; margin:0 auto 26px;">
+        Pick a real, finished World Cup fixture. It gets settled against the authoritative result,
+        every settlement is hash-chained, and then you get to try to forge it.
+      </p>
+
+      <p class="picker-lbl">Step 1 — choose a fixture</p>
+      <div class="fx-grid" id="fx-grid"></div>
+
+      <div id="board">
+        <div class="panel">
+          <div class="board-top">
+            <div>
+              <div class="teams" id="b-teams">—</div>
+              <div class="subline" id="b-sub">—</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="score" id="b-score">—</div>
+            <div class="outcome-pill" id="b-outcome">—</div>
+            <div class="fbadge"><span class="d"></span><span id="b-final">game_finalised</span></div>
+          </div>
+
+          <div class="var-note" id="b-var" style="display:none;"></div>
+
+          <div class="board-grid">
+            <div class="card">
+              <h3>Step 2 — markets settled against the result <span style="color:var(--dim);font-weight:600;text-transform:none;letter-spacing:0;">(click one to inspect its receipt)</span></h3>
+              <table class="mk">
+                <thead><tr><th>Market</th><th class="r">Resolves</th></tr></thead>
+                <tbody id="mk-body"></tbody>
+              </table>
+              <p class="focus-hint" id="mk-hint"></p>
+            </div>
+
+            <div class="col">
+              <div class="card" style="margin-bottom:18px;">
+                <h3>Step 3 — settlement receipt <span id="rc-market" style="color:var(--text);font-weight:700;text-transform:none;letter-spacing:0;"></span></h3>
+                <div id="rc-kv"></div>
+                <div class="hashbox">
+                  <div class="lbl"><span>Receipt hash (SHA-256)</span><span class="repro ok" id="rc-repro">✓ reproduced</span></div>
+                  <div class="hashval" id="rc-hash">—</div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>Step 4 — audit chain <span style="color:var(--dim);font-weight:600;text-transform:none;letter-spacing:0;">(SHA-256 linked, git-style)</span></h3>
+                <div class="chain" id="chain"></div>
+                <div class="hashbox">
+                  <div class="lbl"><span>Chain head — this is what gets anchored on Solana</span></div>
+                  <div class="hashval" id="chain-head">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAMPER LAB -->
+          <div class="lab">
+            <div class="lab-head">
+              <span class="ico">🧪</span>
+              <div>
+                <div class="t">Step 5 — the tamper lab</div>
+                <div class="s">Rewrite the result and watch the settlement fail. Every hash below is recomputed live in your browser.</div>
+              </div>
+            </div>
+            <div class="lab-grid">
+              <div class="lab-controls">
+                <div class="ctl">
+                  <div class="cl">Forge the final score</div>
+                  <div class="scoreedit">
+                    <div>
+                      <div class="team-l" id="edit-home-l">Home</div>
+                      <div class="stepper">
+                        <button data-side="home" data-d="-1">−</button>
+                        <span class="val" id="edit-home">0</span>
+                        <button data-side="home" data-d="1">+</button>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="team-l" id="edit-away-l">Away</div>
+                      <div class="stepper">
+                        <button data-side="away" data-d="-1">−</button>
+                        <span class="val" id="edit-away">0</span>
+                        <button data-side="away" data-d="1">+</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="labbtns">
+                    <button id="btn-blowout">Fabricate a blowout (+5 home)</button>
+                    <button id="btn-flip">Corrupt one byte of the source string</button>
+                    <button class="reset" id="btn-reset">Reset to the real result</button>
+                  </div>
+                </div>
+                <div class="ctl" style="margin-bottom:0;">
+                  <div class="cl">How hard is the forger trying?</div>
+                  <label class="togline">
+                    <input type="checkbox" id="tog-launder">
+                    <span>
+                      <span class="tt">Cover the tracks — re-hash the whole receipt &amp; ledger to be internally consistent</span>
+                      <span class="td">A lazy tamper is caught at the evidence layer. A determined forger recomputes the
+                      digest, resolution, receipt hash and rewrites the audit chain so it all agrees with itself —
+                      leaving only one thing they can't change: the head already anchored on Solana.</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="lab-verify">
+                <div class="verdict ok" id="verdict">
+                  <span class="big" id="verdict-big">VERIFIED</span>
+                  <span class="sub" id="verdict-sub">settlement reproduces from real, unaltered evidence</span>
+                </div>
+                <div class="checks" id="checks"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= ON-CHAIN ANCHOR ========================= -->
+    <section class="block" id="anchor">
+      <h2 class="sec">On-chain anchor · Solana devnet</h2>
+      <p style="text-align:center; color:var(--dim); font-size:15px; max-width:680px; margin:0 auto 26px;">
+        A hash chain is tamper-evident to whoever holds the log — but a judge still has to trust the
+        log in front of them is the one produced live. Anchoring closes that gap: commit the chain
+        head on-chain, and the whole history is checkable from a single transaction signature.
+      </p>
+      <div class="anchor-wrap">
+        <div class="panel anchor-card">
+          <h3 style="margin:0 0 10px; font-size:16px;">How the anchor works</h3>
+          <p>The oracle commits the ledger's rolling <b>chain head</b> — one SHA-256 that transitively
+          commits to the entire settlement history — into a Solana <b>Memo Program</b> transaction. It
+          anchors the head, not every receipt, the same way TxODDS itself anchors a Merkle root rather
+          than every data event: equivalent tamper-evidence at a fraction of the cost.</p>
+          <p style="margin-bottom:4px;">The memo is exactly:</p>
+          <div class="memo" id="anchor-memo">settlement-oracle:v1:&lt;chain-head-sha256&gt;</div>
+          <p>To dispute a settlement, anyone re-fetches the transaction, decodes the memo, and checks it
+          commits to the head their receipt chains up to. No access to our server or database required.</p>
+          <p class="honest" id="anchor-honest"></p>
+        </div>
+
+        <div class="panel anchor-card txcard">
+          <h3 style="margin:0 0 6px; font-size:16px;">Live on devnet — verify it yourself</h3>
+          <p style="margin:0 0 12px; font-size:13px;">
+            The identical <span class="mono">SolanaAnchor</span> code, run live on Solana devnet by the
+            sister project. Open it, decode the Memo, and it matches the committed chain head
+            byte-for-byte.
+          </p>
+          <div class="txrow"><span class="k">transaction</span><span class="v" id="tx-sig">—</span></div>
+          <div class="txrow"><span class="k">slot</span><span class="v" id="tx-slot">—</span></div>
+          <div class="txrow"><span class="k">anchored head</span><span class="v" id="tx-head">—</span></div>
+          <div class="txrow"><span class="k">cluster</span><span class="v">devnet</span></div>
+          <a class="explorer" id="tx-link" href="#" target="_blank" rel="noopener">⛓ Open on Solana Explorer →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= HOW / VERIFY LAYERS ========================= -->
+    <section class="block">
+      <h2 class="sec">Verification — six layers, trusting nothing</h2>
+      <p style="text-align:center; color:var(--dim); font-size:15px; max-width:700px; margin:0 auto 26px;">
+        The first three layers prove a receipt is internally honest. A determined forger can fake all
+        three at once — so the last three bind the receipt to things the forger doesn't control.
+      </p>
+      <div class="layers">
+        <div class="layer g"><div class="lh"><span class="d"></span>Evidence integrity</div><p>Re-hash the embedded result bundle. Catches a doctored evidence body.</p></div>
+        <div class="layer g"><div class="lh"><span class="d"></span>Settlement replay</div><p>Re-derive the result and re-run the deterministic rule. Catches a wrong or invented YES/NO.</p></div>
+        <div class="layer g"><div class="lh"><span class="d"></span>Receipt fingerprint</div><p>Recompute the receipt hash. Catches tampering with any bound field.</p></div>
+        <div class="layer b"><div class="lh"><span class="d"></span>Audit chain</div><p>Recompute the hash chain and require it to contain the receipt. Catches deletion, reordering, insertion.</p></div>
+        <div class="layer b"><div class="lh"><span class="d"></span>On-chain anchor</div><p>The Solana memo must commit to the ledger head. Catches rewriting history after it was anchored.</p></div>
+        <div class="layer a"><div class="lh"><span class="d"></span>Source re-verify</div><p>Re-fetch the result live from TxLINE. Catches a fabricated-but-consistent bundle. (Dispute mode.)</p></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="sec">The pipeline</h2>
+      <div class="steps">
+        <div class="step"><div class="n">01 · RESULT</div><div class="s">game_finalised</div><p>Take the authoritative full-time result from the TxLINE scores feed — the explicit "this is final" signal, ignoring transient VAR states.</p></div>
+        <div class="step"><div class="n">02 · SETTLE</div><div class="s">Deterministic rule</div><p>Resolve each market as a pure function of (contract, result). Same inputs, same YES/NO, replayable by anyone.</p></div>
+        <div class="step"><div class="n">03 · CHAIN</div><div class="s">SHA-256 ledger</div><p>Append every settlement as a hash-chained link. Rewrite any past receipt and every downstream hash breaks.</p></div>
+        <div class="step"><div class="n">04 · ANCHOR</div><div class="s">Solana devnet</div><p>Commit the chain head in a Memo transaction, so the whole history is checkable from one signature.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span class="muted">Verifiable Settlement Oracle · deterministic settlement · tamper-evident audit log · Solana devnet · paper / devnet only, no custody</span>
+      <span class="spacer"></span>
+      <a href="https://github.com/wuxusen/settlement-oracle">github.com/wuxusen/settlement-oracle</a>
+    </div>
+  </footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
