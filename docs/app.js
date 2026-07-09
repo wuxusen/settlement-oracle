@@ -234,12 +234,12 @@ function renderPicker() {
       '<div class="meta"><span class="scorepill">' + esc(fx.score) + "</span>" +
       "<span>" + esc(OUTCOME_LABEL[fx.outcome] || fx.outcome) + "</span></div>" +
       (fx.is_var_case ? '<div class="var">◆ VAR overturn case</div>' : "");
-    b.addEventListener("click", () => selectFixture(fx.fixture_id));
+    b.addEventListener("click", () => selectFixture(fx.fixture_id, true));
     grid.appendChild(b);
   });
 }
 
-function selectFixture(fid) {
+function selectFixture(fid, scroll) {
   const fx = DATA.fixtures.find((f) => f.fixture_id === fid);
   if (!fx) return;
   state.fixture = fx;
@@ -256,6 +256,7 @@ function selectFixture(fid) {
   $("tog-launder").checked = false;
 
   // keep the board comfortably in view without yanking the page
+  if (scroll === false) return;
   const top = board.getBoundingClientRect().top + window.scrollY - 80;
   if (window.scrollY < top - 40) window.scrollTo({ top, behavior: "smooth" });
 }
@@ -714,8 +715,9 @@ async function boot() {
     txt.textContent = "Self-test error: " + e.message;
   }
 
-  // preselect the headline VAR fixture so the demo is populated on load
-  selectFixture(DATA.default_fixture_id || DATA.fixtures[0].fixture_id);
+  // preselect the headline VAR fixture so the demo is populated on load, but
+  // leave the reader at the top of the page — do not yank them down to it
+  selectFixture(DATA.default_fixture_id || DATA.fixtures[0].fixture_id, false);
 }
 
 if (document.readyState === "loading") {
