@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo — Verifiable Settlement Oracle</title>
+<meta name="description" content="68-second walkthrough: settle a real World Cup market on TxLINE evidence, then watch the browser re-check every hash and catch a tampered result — even one laundered through the whole ledger.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0e13'/%3E%3Cpath d='M16 4l9 4v6c0 5.5-3.8 10.4-9 12-5.2-1.6-9-6.5-9-12V8z' fill='none' stroke='%2335d488' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M11.5 16l3 3 6-6.5' fill='none' stroke='%2335d488' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #0b0e13; --panel: #12161f; --panel-2: #171c27; --border: #232a38;
+    --text: #e8ecf4; --dim: #8a93a6; --green: #35d488; --red: #ff4d5e;
+    --amber: #f4b942; --blue: #5aa2ff; --link: #7ab4ff;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f4f6fa; --panel: #ffffff; --panel-2: #eef1f6; --border: #d8deea;
+            --text: #121722; --dim: #5c667a; --link: #1f6feb; }
+  }
+  :root[data-theme="dark"] { --bg: #0b0e13; --panel: #12161f; --panel-2: #171c27; --border: #232a38;
+            --text: #e8ecf4; --dim: #8a93a6; --link: #7ab4ff; }
+  :root[data-theme="light"] { --bg: #f4f6fa; --panel: #ffffff; --panel-2: #eef1f6; --border: #d8deea;
+            --text: #121722; --dim: #5c667a; --link: #1f6feb; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  body { background: var(--bg); color: var(--text); line-height: 1.55;
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link); }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 22px; }
+  header { border-bottom: 1px solid var(--border); background: var(--panel); position: sticky; top: 0; z-index: 30; }
+  header .wrap { display: flex; align-items: center; gap: 14px; padding: 14px 22px; }
+  .logo { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+  .logo svg { width: 21px; height: 21px; }
+  header .spacer { flex: 1; }
+  header a.nav { font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--text);
+    border: 1px solid var(--border); padding: 8px 13px; border-radius: 8px; background: var(--panel-2); white-space: nowrap; }
+  header a.nav:hover { border-color: var(--green); }
+
+  .hero { text-align: center; padding: 46px 0 8px; }
+  .kicker { color: var(--blue); letter-spacing: 0.15em; font-size: 12px; text-transform: uppercase; font-weight: 700; margin-bottom: 16px; }
+  h1 { font-size: clamp(28px, 4.4vw, 42px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 auto 16px; max-width: 720px; font-weight: 800; }
+  .sub { color: var(--dim); font-size: 16px; max-width: 640px; margin: 0 auto; }
+  .sub b { color: var(--text); font-weight: 700; }
+
+  .player { margin: 30px auto 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+    background: #000; box-shadow: 0 24px 60px -30px rgba(0,0,0,.8); }
+  .player video { display: block; width: 100%; height: auto; background: #000; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 16px;
+    color: var(--dim); font-size: 13px; margin: 14px 0 0; }
+  .meta .mono { font-family: var(--mono); }
+  .meta .dot { opacity: .5; }
+
+  .beats { list-style: none; padding: 0; margin: 34px auto 0; max-width: 760px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .beat { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px 16px; }
+  .beat .t { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; margin-bottom: 5px; }
+  .beat .pip { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .beat.g .pip { background: var(--green); box-shadow: 0 0 9px 0 var(--green); }
+  .beat.b .pip { background: var(--blue); box-shadow: 0 0 9px 0 var(--blue); }
+  .beat.r .pip { background: var(--red); box-shadow: 0 0 9px 0 var(--red); }
+  .beat p { margin: 0; color: var(--dim); font-size: 13px; }
+  .beat code { font-family: var(--mono); color: var(--text); font-size: 12px; }
+
+  .cta { text-align: center; margin: 36px 0 60px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 15px;
+    padding: 12px 20px; border-radius: 10px; border: 1px solid transparent; white-space: nowrap; }
+  .btn.primary { background: var(--green); color: #04160d; }
+  .btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+  .btn.ghost:hover { border-color: var(--green); }
+  footer { border-top: 1px solid var(--border); color: var(--dim); font-size: 13px; text-align: center; padding: 22px; }
+  @media (max-width: 640px) { .beats { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="./">
+    <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#0b0e13"/><path d="M16 4l9 4v6c0 5.5-3.8 10.4-9 12-5.2-1.6-9-6.5-9-12V8z" fill="none" stroke="#35d488" stroke-width="2.4" stroke-linejoin="round"/><path d="M11.5 16l3 3 6-6.5" fill="none" stroke="#35d488" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    settlement-oracle
+  </a>
+  <span class="spacer"></span>
+  <a class="nav" href="./">Live app</a>
+  <a class="nav" href="https://github.com/wuxusen/settlement-oracle">GitHub</a>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="kicker">Demo · 68 seconds · no audio</div>
+    <h1>Settle a real market, then try to fake the result.</h1>
+    <p class="sub">A single walkthrough of the live app: pick a finished World Cup fixture, settle a contract off the TxLINE <b>game_finalised</b> result, then tamper with the score and watch the browser re-check every hash and reject it — <b>even when the whole ledger is laundered to agree with itself.</b></p>
+  </section>
+
+  <div class="player">
+    <video controls preload="metadata" playsinline poster="demo-poster.jpg">
+      <source src="demo.mp4" type="video/mp4">
+      Your browser can't play the embedded video —
+      <a href="demo.mp4">download the MP4 here</a> instead.
+    </video>
+  </div>
+  <div class="meta">
+    <span>Recorded against the live page</span><span class="dot">·</span>
+    <span>every verdict computed on-screen by the browser's Web Crypto</span><span class="dot">·</span>
+    <span class="mono">1080p · 11 MB</span>
+  </div>
+
+  <ul class="beats">
+    <li class="beat g"><div class="t"><span class="pip"></span>VERIFIED</div><p>The real result settles deterministically and reproduces from the receipt — <code>evidence_integrity</code> to <code>onchain_anchor</code> all pass.</p></li>
+    <li class="beat r"><div class="t"><span class="pip"></span>TAMPER DETECTED</div><p>Change one goal and the recomputed hashes stop matching the committed values. The forgery is caught at the evidence layer.</p></li>
+    <li class="beat b"><div class="t"><span class="pip"></span>ANCHOR HOLDS</div><p>Launder the entire ledger so it's internally consistent — only <code>onchain_anchor</code> still fails, because the head was already committed on Solana.</p></li>
+  </ul>
+
+  <div class="cta">
+    <a class="btn primary" href="./">▶ Try the live tamper demo yourself</a>
+    <a class="btn ghost" href="https://github.com/wuxusen/settlement-oracle">View the source</a>
+  </div>
+</main>
+
+<footer>Verifiable Settlement Oracle · Prediction-market settlement anyone can re-check from a single signature.</footer>
+</body>
+</html>
