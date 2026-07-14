@@ -23,11 +23,13 @@ independently replay the settlement and confirm three things:
 
 If any of those fail, the settlement is rejected. That is the whole point.
 
-This is the sister project to
-[`odds-market-maker`](../odds-market-maker): the market maker prices a match
-*while it is being played*; this oracle settles it *once it is over*. They
-share the same real TxLINE data plumbing and the same Solana anchoring, aimed
-at opposite ends of a contract's life.
+This is one of a **three-tool suite** I built on the same real TxLINE data, one
+for each stage of a match contract's life: the
+[in-play market maker](https://github.com/wuxusen/odds-market-maker) prices a
+match *while it is being played*,
+[Called It](https://github.com/wuxusen/called-it) is a fan play-along layer on
+the same live win-probability line, and this oracle settles the contract *once
+it is over*. They share the same TxLINE data plumbing and Solana anchoring.
 
 > Paper / devnet only. No real money changes hands, nothing touches Solana
 > mainnet, and the oracle never custodies funds. It decides outcomes; payout
